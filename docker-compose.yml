@@ -1,0 +1,30 @@
+version: '3.8'  # La versión de Docker Compose que estamos utilizando
+
+services:
+  # Configuración del servicio Flask
+  flask_app:
+    build: ./flask-app  # Ruta al directorio que contiene el código de la aplicación Flask
+    ports:
+      - "8000:5000"  # Mapeo del puerto del contenedor al puerto del host
+    depends_on:
+      - db  # Indicamos que este servicio depende del servicio "db" (MySQL)
+  
+  # Configuración del servicio MySQL
+  db:
+    image: mysql:latest
+    ports:
+      - "3308:3306"  # Mapeo del puerto del contenedor al puerto del host
+    environment:
+      MYSQL_ROOT_PASSWORD: root  # Contraseña del usuario root de MySQL
+      MYSQL_DATABASE: calculo_tarifario  # Nombre de la base de datos que se creará automáticamente
+      # Otras variables de entorno necesarias para la configuración de MySQL
+
+  # Configuración del servicio Nginx
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"  # Mapeo del puerto del contenedor al puerto del host
+    volumes:
+      - ./nginx-config:/etc/nginx/conf.d  # Ruta al directorio que contiene la configuración de Nginx
+    depends_on:
+      - flask_app  # Indicamos que este servicio depende del servicio "flask_app" (Flask)
