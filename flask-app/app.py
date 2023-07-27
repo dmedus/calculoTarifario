@@ -3,17 +3,12 @@ import mysql.connector
 
 app = Flask(__name__)
 
-# Reemplaza las siguientes configuraciones de la base de datos con los detalles de tu base de datos MySQL
-configuracion_db = {
-    'host': 'localhost',
-    'user': 'root',
-    'password': 'root',
-    'database': 'calculo_tarifario',
-}
-
 # Función para establecer una conexión con la base de datos MySQL
 def crear_conexion():
-    conexion = mysql.connector.connect(**configuracion_db)
+    conexion = mysql.connector.connect(
+     user= 'root',
+     password= 'root',
+     database= 'calculo_tarifario')
     return conexion
 
 # Ruta para mostrar la lista de usuarios desde la base de datos
